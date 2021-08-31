@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "490236666487",
+    "project_id": "undoubt-1c311",
+    "storage_bucket": "undoubt-1c311.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:490236666487:android:328d87abc8ab591375dc72",
+        "android_client_info": {
+          "package_name": "com.example.undoubt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "490236666487-i81fvh1bbka9e7n7h4sp73sa502jg52o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.undoubt",
+            "certificate_hash": "8d36999dc098852e0ccf6fd20dc88f594f339872"
+          }
+        },
+        {
+          "client_id": "490236666487-bstq9jannr5h75hi2n2l0dsm3ita9mn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP_PUdHzTIBpUseLvgsSETkcydJ2z3K8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "490236666487-bstq9jannr5h75hi2n2l0dsm3ita9mn9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
