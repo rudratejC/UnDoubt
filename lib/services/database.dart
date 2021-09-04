@@ -10,4 +10,33 @@ class DatabaseMethods {
         .doc(userId)
         .set(userInfoMap);
   }
+
+  //creating the classroom
+  createClassRoom(String classCode, Map classroomInfoMap) async {
+    return FirebaseFirestore.instance
+        .collection("classrooms")
+        .doc(classCode)
+        .set(classroomInfoMap);
+  }
+
+//enrolling in new classrrom
+  add(String userName, String classCode) async {
+    final snapShot = await FirebaseFirestore.instance
+        .collection("classrooms")
+        .doc(classCode)
+        .get();
+    if (!snapShot.exists) {
+      return false;
+    }
+    List users = snapShot['users'];
+
+    print(snapShot['users']);
+    users.add(userName);
+    FirebaseFirestore.instance
+        .collection("classrooms")
+        .doc(classCode)
+        .set({'users': users}, SetOptions(merge: true)).then((_) {
+      print("success!");
+    });
+  }
 }

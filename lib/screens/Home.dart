@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:undoubt/helpers/sharedpref_helper.dart';
+import 'package:undoubt/screens/create_classroom.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -29,6 +30,14 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: Center(
         child: Text("Namaste $name \n your email is $email"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print('add classroom pressed');
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => CreateClassroomScreen()));
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
