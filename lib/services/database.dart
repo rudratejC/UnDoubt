@@ -39,4 +39,14 @@ class DatabaseMethods {
       print("success!");
     });
   }
+
+  //load the enrolled classrooms
+  Future<Stream<QuerySnapshot>> getClassRooms() async {
+    String myUsername = await SharedPreferenceHelper().getUserName();
+    return FirebaseFirestore.instance
+        .collection("classrooms")
+        .orderBy("ts", descending: true)
+        .where("users", arrayContains: myUsername)
+        .snapshots();
+  }
 }

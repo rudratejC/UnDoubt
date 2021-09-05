@@ -43,7 +43,7 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
         "creatorEmail": email,
         "classCode": classCode,
         "ts": time,
-        "users": [email, 'rudratejchilkewar@gmail.com']
+        "users": [email]
       };
       DatabaseMethods().createClassRoom(classCode, classroomInfoMap);
       Navigator.pushReplacement(
