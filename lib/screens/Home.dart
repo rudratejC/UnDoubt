@@ -2,50 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:undoubt/helpers/sharedpref_helper.dart';
+import 'package:undoubt/screens/classroom_screen.dart';
 import 'package:undoubt/screens/create_classroom.dart';
 import 'package:undoubt/screens/signIn.dart';
 import 'package:undoubt/services/auth.dart';
 import 'package:undoubt/services/database.dart';
-
-// class Home extends StatefulWidget {
-//   @override
-//   _HomeState createState() => _HomeState();
-// }
-
-// class _HomeState extends State<Home> {
-//   String name, email;
-
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     onLoad();
-//   }
-
-//   onLoad() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     name = prefs.getString("USERDISPLAYNAMEKEY");
-//     email = prefs.getString("USEREMAILKEY");
-//     setState(() {});
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Text("Namaste $name \n your email is $email"),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           print('add classroom pressed');
-//           Navigator.pushReplacement(context,
-//               MaterialPageRoute(builder: (context) => CreateClassroomScreen()));
-//         },
-//         child: Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
 
 class Home extends StatefulWidget {
   @override
@@ -61,10 +22,11 @@ class _HomeState extends State<Home> {
 
   getMyInfoFromSharedPreference() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    myName = prefs.getString('USERDISPLAYNAMEKEY');
-    myProfilePic = prefs.getString('USERPROFILEPICKEY');
     myUserName = prefs.getString('USERNAMEKEY');
     myEmail = prefs.getString('USEREMAILKEY');
+    myName = prefs.getString('USERDISPLAYNAMEKEY');
+    myProfilePic = prefs.getString('USERPROFILEPICKEY');
+
     setState(() {});
   }
 
@@ -78,8 +40,8 @@ class _HomeState extends State<Home> {
   }
 
   getUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    myUserName = prefs.getString("USERNAMEKEY");
+    myName = await SharedPreferenceHelper().getDisplayName();
+    setState(() {});
   }
 
   @override
@@ -124,11 +86,14 @@ class _HomeState extends State<Home> {
   Widget classRoomsListTile({classRoomName, creatorName, classCode}) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) =>
-        //             ChatScreen(chatWithUsername, recieverName, reciverPic)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ClassroomScreen(
+                      classRoomName: classRoomName,
+                      classCode: classCode,
+                      creatorName: creatorName,
+                    )));
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 6),
@@ -180,7 +145,7 @@ class _HomeState extends State<Home> {
                             )
                           : Container(
                               child: Text(
-                                "Welcome to ChatApp!",
+                                "Welcome to UnDoubt!",
                               ),
                             ),
                       Spacer(),

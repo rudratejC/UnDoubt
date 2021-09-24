@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:undoubt/helpers/sharedpref_helper.dart';
 import 'package:undoubt/screens/Home.dart';
 import 'package:undoubt/services/auth.dart';
 import 'package:undoubt/services/database.dart';
@@ -24,9 +25,8 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
   }
 
   onLoad() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    name = prefs.getString("USERDISPLAYNAMEKEY");
-    email = prefs.getString("USEREMAILKEY");
+    name = await SharedPreferenceHelper().getDisplayName();
+    email = await SharedPreferenceHelper().getUserName();
     setState(() {});
   }
 

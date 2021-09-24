@@ -49,4 +49,14 @@ class DatabaseMethods {
         .where("users", arrayContains: myUsername)
         .snapshots();
   }
+
+  //getting doubts from claassrooms
+  getDoubts(String classCode) async {
+    return FirebaseFirestore.instance
+        .collection("classrooms")
+        .doc(classCode)
+        .collection("doubts")
+        .orderBy("time", descending: true)
+        .snapshots();
+  }
 }
