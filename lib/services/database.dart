@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:random_string/random_string.dart';
 import 'package:undoubt/helpers/sharedpref_helper.dart';
 
 class DatabaseMethods {
@@ -59,4 +60,25 @@ class DatabaseMethods {
         .orderBy("time", descending: true)
         .snapshots();
   }
+
+  //adding doubts to classroom
+  Future addDoubt(String classCode, String doubt) async {
+    String id = randomAlphaNumeric(6);
+    String myUsername = await SharedPreferenceHelper().getUserName();
+    Map<String, dynamic> map = {
+      "askedBy": myUsername,
+      "desc": doubt,
+      "time": DateTime.now()
+    };
+    print(classCode);
+    print(map);
+
+    return FirebaseFirestore.instance
+        .collection("classrooms")
+        .doc(classCode)
+        .collection("doubts")
+        .doc(id)
+        .set(map);
+  }
+  //getting answers by doubt code
 }

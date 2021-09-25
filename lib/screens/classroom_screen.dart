@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:undoubt/screens/bottom_sheet_doubt.dart';
 import 'package:undoubt/screens/create_classroom.dart';
 import 'package:undoubt/services/database.dart';
 
@@ -45,18 +46,18 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                   // );
 
                   return doubtsListTile(
-                    desc: ds["desc"],
-                    time: ds["time"],
-                  );
+                      desc: ds["desc"], time: ds["time"], id: ds.id);
                 })
             : Center(child: CircularProgressIndicator());
       },
     );
   }
 
-  Widget doubtsListTile({desc, time}) {
+  Widget doubtsListTile({desc, time, id}) {
     return GestureDetector(
       onTap: () {
+        print("\n\n$id\n\n");
+        print(widget.classCode);
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
@@ -114,14 +115,49 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('add classroom pressed');
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CreateClassroomScreen()));
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: MyFloatingButton(
+        classCode: widget.classCode,
       ),
     );
+  }
+}
+
+class MyFloatingButton extends StatefulWidget {
+  String classCode;
+  MyFloatingButton({String classCode}) {
+    this.classCode = classCode;
+  }
+  @override
+  _MyFloatingButtonState createState() => _MyFloatingButtonState();
+}
+
+class _MyFloatingButtonState extends State<MyFloatingButton> {
+  bool _show = true;
+  @override
+  Widget build(BuildContext context) {
+    return _show
+        ? FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              var sheetController = showBottomSheet(
+                  context: context,
+                  builder: (context) => BottomSheetWidget(
+                        classcode: widget.classCode,
+                      ));
+
+              _showButton(false);
+
+              sheetController.closed.then((value) {
+                _showButton(true);
+              });
+            },
+          )
+        : Container();
+  }
+
+  void _showButton(bool value) {
+    setState(() {
+      _show = value;
+    });
   }
 }
