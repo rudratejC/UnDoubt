@@ -1,24 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:undoubt/screens/answer_screen.dart';
-import 'package:undoubt/screens/bottom_sheet_doubt.dart';
+import 'package:undoubt/screens/bottom_sheet_ans.dart';
 import 'package:undoubt/screens/create_classroom.dart';
 import 'package:undoubt/services/database.dart';
 
-class ClassroomScreen extends StatefulWidget {
-  String classCode, classRoomName, creatorName;
-  ClassroomScreen(
-      {String classRoomName, String creatorName, String classCode}) {
+class AnwerScreen extends StatefulWidget {
+  String classCode, classRoomName, creatorName, doubtText, doubtId;
+  AnwerScreen(
+      {String classRoomName,
+      String creatorName,
+      String classCode,
+      String doubtText,
+      String doubtId}) {
     this.classCode = classCode;
     this.classRoomName = classRoomName;
     this.creatorName = creatorName;
+    this.doubtText = doubtText;
+    this.doubtId = doubtId;
   }
   @override
-  _ClassroomScreenState createState() => _ClassroomScreenState();
+  _AnwerScreenState createState() => _AnwerScreenState();
 }
 
-class _ClassroomScreenState extends State<ClassroomScreen> {
-  Stream doubtsStream;
+class _AnwerScreenState extends State<AnwerScreen> {
+  Stream answerStream;
   @override
   void initState() {
     super.initState();
@@ -26,13 +31,14 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
   }
 
   getdbts() async {
-    doubtsStream = await DatabaseMethods().getDoubts(widget.classCode);
+    answerStream = await DatabaseMethods()
+        .getAnswers(classCode: widget.classCode, doubtId: widget.doubtId);
     setState(() {});
   }
 
-  Widget doubtsList() {
+  Widget answerList() {
     return StreamBuilder(
-      stream: doubtsStream,
+      stream: answerStream,
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
@@ -46,7 +52,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                   //   style: chatTileStyle(),
                   // );
 
-                  return doubtsListTile(
+                  return answerListTile(
                       desc: ds["desc"], time: ds["time"], id: ds.id);
                 })
             : Center(child: CircularProgressIndicator());
@@ -54,26 +60,24 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
     );
   }
 
-  Widget doubtsListTile({desc, time, id}) {
+  Widget answerListTile({desc, time, id}) {
     return GestureDetector(
       onTap: () {
         print("\n\n$id\n\n");
         print(widget.classCode);
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AnwerScreen(
-                      classRoomName: widget.classRoomName,
-                      classCode: widget.classCode,
-                      creatorName: widget.creatorName,
-                      doubtText: desc,
-                      doubtId: id,
-                    )));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => AnwerScreen(
+        //               classRoomName: classRoomName,
+        //               classCode: classCode,
+        //               creatorName: creatorName,
+        //             )));
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 6),
         child: ListTile(
-          leading: Icon(Icons.question_answer_outlined),
+          leading: Icon(Icons.question_answer),
           title: Text(desc),
           subtitle: Text("${time.toDate().toString()}"),
         ),
@@ -86,7 +90,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.classRoomName,
+          widget.doubtText,
         ),
         centerTitle: true,
       ),
@@ -109,7 +113,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
                       Container(
                         margin: EdgeInsets.only(top: 6),
                         child: Column(
-                          children: [doubtsList()],
+                          children: [answerList()],
                         ),
                       ),
                     ],
@@ -119,16 +123,18 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
         ),
       ),
       floatingActionButton: MyFloatingButton(
-        classCode: widget.classCode,
+        doubtId: widget.doubtId,
+        classcode: widget.classCode,
       ),
     );
   }
 }
 
 class MyFloatingButton extends StatefulWidget {
-  String classCode;
-  MyFloatingButton({String classCode}) {
-    this.classCode = classCode;
+  String doubtId, classCode;
+  MyFloatingButton({String doubtId, String classcode}) {
+    this.doubtId = doubtId;
+    this.classCode = classcode;
   }
   @override
   _MyFloatingButtonState createState() => _MyFloatingButtonState();
@@ -145,6 +151,7 @@ class _MyFloatingButtonState extends State<MyFloatingButton> {
               var sheetController = showBottomSheet(
                   context: context,
                   builder: (context) => BottomSheetWidget(
+                        doubtid: widget.doubtId,
                         classcode: widget.classCode,
                       ));
 

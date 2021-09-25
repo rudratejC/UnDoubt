@@ -61,6 +61,18 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  //getting doubts from claassrooms
+  getAnswers({String classCode, String doubtId}) async {
+    return FirebaseFirestore.instance
+        .collection("classrooms")
+        .doc(classCode)
+        .collection("doubts")
+        .doc(doubtId)
+        .collection("answers")
+        .orderBy("time", descending: true)
+        .snapshots();
+  }
+
   //adding doubts to classroom
   Future addDoubt(String classCode, String doubt) async {
     String id = randomAlphaNumeric(6);
@@ -80,5 +92,27 @@ class DatabaseMethods {
         .doc(id)
         .set(map);
   }
+
   //getting answers by doubt code
+  Future addAns(String classCode, String doubtId, String ans) async {
+    String id = randomAlphaNumeric(6);
+    String myUsername = await SharedPreferenceHelper().getUserName();
+    Map<String, dynamic> map = {
+      "addedBy": myUsername,
+      "desc": ans,
+      "time": DateTime.now()
+    };
+    print(classCode);
+    print(doubtId);
+    print(map);
+
+    return FirebaseFirestore.instance
+        .collection("classrooms")
+        .doc(classCode)
+        .collection("doubts")
+        .doc(doubtId)
+        .collection("answers")
+        .doc(id)
+        .set(map);
+  }
 }
