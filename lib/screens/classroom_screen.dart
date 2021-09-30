@@ -79,7 +79,7 @@ class _ClassroomScreenState extends State<ClassroomScreen> {
           child: ListTile(
             leading: Icon(Icons.question_answer_outlined),
             title: Text(desc),
-            subtitle: Text("${time.toDate().toString()}"),
+            subtitle: Text("${time.toDate().toString().substring(0, 16)}"),
           ),
         ),
       ),

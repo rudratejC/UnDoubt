@@ -82,7 +82,7 @@ class _AnwerScreenState extends State<AnwerScreen> {
           child: ListTile(
             leading: Icon(Icons.question_answer),
             title: SelectableText(desc),
-            subtitle: Text("${time.toDate().toString()}"),
+            subtitle: Text("${time.toDate().toString().substring(0, 16)}"),
           ),
         ),
       ),
@@ -195,7 +195,7 @@ class _MyFloatingButtonState extends State<MyFloatingButton> {
   Widget build(BuildContext context) {
     return _show
         ? FloatingActionButton(
-          backgroundColor: Colors.grey,
+            backgroundColor: Colors.grey,
             child: Icon(Icons.add),
             onPressed: () {
               var sheetController = showBottomSheet(
