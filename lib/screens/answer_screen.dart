@@ -44,13 +44,9 @@ class _AnwerScreenState extends State<AnwerScreen> {
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
-                  //return classRoomsListTile(ds["lastMessage"], ds.id, myUserName);
-                  // return Text(
-                  //   ds.id.replaceAll(myUserName, "").replaceAll("_", ""),
-                  //   style: chatTileStyle(),
-                  // );
 
                   return answerListTile(
                       desc: ds["desc"], time: ds["time"], id: ds.id);
@@ -75,11 +71,19 @@ class _AnwerScreenState extends State<AnwerScreen> {
         //             )));
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 6),
-        child: ListTile(
-          leading: Icon(Icons.question_answer),
-          title: Text(desc),
-          subtitle: Text("${time.toDate().toString()}"),
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(56, 68, 160, 1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        width: MediaQuery.of(context).size.width * 0.92,
+        padding: EdgeInsets.all(6.0),
+        margin: EdgeInsets.only(bottom: 12.0),
+        child: Center(
+          child: ListTile(
+            leading: Icon(Icons.question_answer),
+            title: SelectableText(desc),
+            subtitle: Text("${time.toDate().toString()}"),
+          ),
         ),
       ),
     );
@@ -88,23 +92,68 @@ class _AnwerScreenState extends State<AnwerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.doubtText,
-        ),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white,
+          //color: Colors.white,
           child: Column(
             children: <Widget>[
+              SizedBox(height: MediaQuery.of(context).size.height * 0.10),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.92,
+                padding: EdgeInsets.all(12.0),
+                // height: MediaQuery.of(context).size.height*0.20,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(237, 240, 242, 1),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "🚀${widget.classRoomName}",
+                        style: TextStyle(
+                            color: Color.fromRGBO(56, 68, 160, 1),
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.025),
+                      ),
+                      SelectableText(
+                        widget.doubtText,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.025),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    color: Color.fromRGBO(56, 68, 160, 1),
+                    height: 16,
+                    child: Text(" "),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text("Answers")
+                ],
+              ),
+
               /// doubts
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 24),
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      //color: Colors.white,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30))),
@@ -146,6 +195,7 @@ class _MyFloatingButtonState extends State<MyFloatingButton> {
   Widget build(BuildContext context) {
     return _show
         ? FloatingActionButton(
+          backgroundColor: Colors.grey,
             child: Icon(Icons.add),
             onPressed: () {
               var sheetController = showBottomSheet(

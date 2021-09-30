@@ -18,6 +18,12 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        colorScheme: ColorScheme.dark(),
+      ),
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(
           future: AuthMethods().getCurrentUser(),

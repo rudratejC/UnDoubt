@@ -65,13 +65,9 @@ class _HomeState extends State<Home> {
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
-                  //return classRoomsListTile(ds["lastMessage"], ds.id, myUserName);
-                  // return Text(
-                  //   ds.id.replaceAll(myUserName, "").replaceAll("_", ""),
-                  //   style: chatTileStyle(),
-                  // );
 
                   return classRoomsListTile(
                       classRoomName: ds["name"],
@@ -96,11 +92,20 @@ class _HomeState extends State<Home> {
                     )));
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 6),
-        child: ListTile(
-          leading: Icon(Icons.group),
-          title: Text(classRoomName),
-          subtitle: Text("$creatorName      Code: $classCode"),
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(56, 68, 160, 1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        width: MediaQuery.of(context).size.width * 0.92,
+        height: MediaQuery.of(context).size.height * 0.1,
+        padding: EdgeInsets.all(6.0),
+        margin: EdgeInsets.only(bottom: 12.0),
+        child: Center(
+          child: ListTile(
+            leading: Icon(Icons.group),
+            title: Text(classRoomName),
+            subtitle: Text(creatorName),
+          ),
         ),
       ),
     );
@@ -109,10 +114,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Container(
-            color: Colors.white,
+            //color: Colors.white,
             child: Column(
               children: <Widget>[
                 SizedBox(
@@ -140,7 +145,7 @@ class _HomeState extends State<Home> {
                           ? Container(
                               width: MediaQuery.of(context).size.width * 0.5,
                               child: Text(
-                                "Hi, $myName!",
+                                "Hi, $myName !",
                               ),
                             )
                           : Container(
@@ -152,8 +157,8 @@ class _HomeState extends State<Home> {
                       Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color: Color(0xff444446),
-                            borderRadius: BorderRadius.circular(12)),
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(40)),
                         child: GestureDetector(
                           onTap: () {
                             AuthMethods().signOut();
@@ -163,8 +168,8 @@ class _HomeState extends State<Home> {
                                     builder: (context) => SignIn()));
                           },
                           child: Icon(
-                            Icons.logout,
-                            color: Colors.white,
+                            Icons.settings,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -172,21 +177,49 @@ class _HomeState extends State<Home> {
                   ),
                 ),
 
-                SizedBox(height: 80),
+                SizedBox(
+                  height: 26,
+                ),
+                Container(
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.asset(
+                        "assets/homepageBanner.png",
+                        width: MediaQuery.of(context).size.width * 0.92,
+                      )),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Container(
+                      color: Color.fromRGBO(56, 68, 160, 1),
+                      height: 16,
+                      child: Text(" "),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text("My Classrooms")
+                  ],
+                ),
 
                 /// classrooms
                 Container(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    padding: EdgeInsets.symmetric(horizontal: 18),
                     width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30))),
+                    // decoration: BoxDecoration(
+                    //     //color: Colors.white,
+                    //     borderRadius: BorderRadius.only(
+                    //         topLeft: Radius.circular(30),
+                    //         topRight: Radius.circular(30))),
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(top: 6),
                           child: Column(
                             children: [classRoomsList()],
                           ),
@@ -198,6 +231,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.grey,
           onPressed: () {
             print('add classroom pressed');
             Navigator.push(
