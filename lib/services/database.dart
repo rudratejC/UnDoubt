@@ -94,13 +94,17 @@ class DatabaseMethods {
   }
 
   //getting answers by doubt code
-  Future addAns(String classCode, String doubtId, String ans) async {
+  Future addAns(
+      String classCode, String doubtId, String ans, bool public) async {
     String id = randomAlphaNumeric(6);
     String myUsername = await SharedPreferenceHelper().getUserName();
+    String myName = await SharedPreferenceHelper().getDisplayName();
     Map<String, dynamic> map = {
       "addedBy": myUsername,
       "desc": ans,
-      "time": DateTime.now()
+      "time": DateTime.now(),
+      "public": public,
+      "name": myName
     };
     print(classCode);
     print(doubtId);

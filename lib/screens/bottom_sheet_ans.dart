@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:undoubt/services/database.dart';
 
 TextEditingController ansText = new TextEditingController();
 String doubtId, classCode;
+bool _switchValue = false;
 
 class BottomSheetWidget extends StatefulWidget {
   //const BottomSheetWidget({Key key}) : super(key: key);
@@ -29,11 +31,36 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
           Container(
             height: 125,
             decoration: BoxDecoration(
-                color:  Color.fromRGBO(56, 68, 160, 1),
-                borderRadius: BorderRadius.circular(15),
-                ),
+              color: Color.fromRGBO(56, 68, 160, 1),
+              borderRadius: BorderRadius.circular(15),
+            ),
             child: Column(
-              children: <Widget>[DecoratedTextField(), SheetButton()],
+              children: <Widget>[
+                DecoratedTextField(),
+                Row(
+                  children: [
+                    Spacer(),
+                    Text("Answer publicly:"),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    CupertinoSwitch(
+                      activeColor: Colors.lightGreen[400].withOpacity(0.8),
+                      value: _switchValue,
+                      onChanged: (value) {
+                        setState(() {
+                          _switchValue = value;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    SheetButton(),
+                    Spacer(),
+                  ],
+                ),
+              ],
             ),
           )
         ],
@@ -75,10 +102,11 @@ class _SheetButtonState extends State<SheetButton> {
       color: Colors.black,
       onPressed: () async {
         print("this is classcode $doubtId");
-        if(ansText.text!=""){
-          DatabaseMethods().addAns(classCode, doubtId, ansText.text);
-        ansText.clear();
-        Navigator.pop(context);
+        if (ansText.text != "") {
+          DatabaseMethods()
+              .addAns(classCode, doubtId, ansText.text, _switchValue);
+          ansText.clear();
+          Navigator.pop(context);
         }
       },
       child: Text(

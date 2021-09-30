@@ -49,14 +49,18 @@ class _AnwerScreenState extends State<AnwerScreen> {
                   DocumentSnapshot ds = snapshot.data.docs[index];
 
                   return answerListTile(
-                      desc: ds["desc"], time: ds["time"], id: ds.id);
+                      desc: ds["desc"],
+                      time: ds["time"],
+                      id: ds.id,
+                      public: ds["public"],
+                      name: ds["name"]);
                 })
             : Center(child: CircularProgressIndicator());
       },
     );
   }
 
-  Widget answerListTile({desc, time, id}) {
+  Widget answerListTile({desc, time, id, public, name}) {
     return GestureDetector(
       onTap: () {
         print("\n\n$id\n\n");
@@ -82,7 +86,8 @@ class _AnwerScreenState extends State<AnwerScreen> {
           child: ListTile(
             leading: Icon(Icons.question_answer),
             title: SelectableText(desc),
-            subtitle: Text("${time.toDate().toString().substring(0, 16)}"),
+            subtitle: Text(
+                "${time.toDate().toString().substring(0, 16)} \n${public ? "Contributed by: $name" : ""}"),
           ),
         ),
       ),
