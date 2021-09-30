@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:undoubt/helpers/sharedpref_helper.dart';
 import 'package:undoubt/screens/classroom_screen.dart';
 import 'package:undoubt/screens/create_classroom.dart';
+import 'package:undoubt/screens/enroll.dart';
 import 'package:undoubt/screens/signIn.dart';
 import 'package:undoubt/services/auth.dart';
 import 'package:undoubt/services/database.dart';
@@ -233,11 +234,41 @@ class _HomeState extends State<Home> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.grey,
           onPressed: () {
-            print('add classroom pressed');
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CreateClassroomScreen()));
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Container(
+                    color: Color.fromRGBO(56, 68, 160, 1),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: new Icon(Icons.add),
+                          title: new Text('Create a Classroom'),
+                          onTap: () {
+                            print('add classroom pressed');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CreateClassroomScreen()));
+                          },
+                        ),
+                        ListTile(
+                          leading: new Icon(Icons.add),
+                          title: new Text('Enroll in a Classroom'),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EnrollClassroomScreen()));
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                });
           },
           child: Icon(Icons.add),
         ));

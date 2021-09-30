@@ -6,14 +6,13 @@ import 'package:undoubt/screens/Home.dart';
 import 'package:undoubt/services/auth.dart';
 import 'package:undoubt/services/database.dart';
 
-class CreateClassroomScreen extends StatefulWidget {
+class EnrollClassroomScreen extends StatefulWidget {
   @override
-  _CreateClassroomScreenState createState() => _CreateClassroomScreenState();
+  _EnrollClassroomScreenState createState() => _EnrollClassroomScreenState();
 }
 
-class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
-  TextEditingController nameController = new TextEditingController();
-  TextEditingController creatorNameController = new TextEditingController();
+class _EnrollClassroomScreenState extends State<EnrollClassroomScreen> {
+  TextEditingController codeController = new TextEditingController();
   AuthMethods authService = new AuthMethods();
 
   final formKey = GlobalKey<FormState>();
@@ -29,27 +28,6 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
     name = await SharedPreferenceHelper().getDisplayName();
     email = await SharedPreferenceHelper().getUserName();
     setState(() {});
-  }
-
-  create() async {
-    if (formKey.currentState.validate()) {
-      setState(() {
-        isLoading = true;
-      });
-      var time = DateTime.now();
-      classCode = randomAlphaNumeric(6);
-      Map<String, dynamic> classroomInfoMap = {
-        "name": nameController.text,
-        "creator": creatorNameController.text,
-        "creatorEmail": email,
-        "classCode": classCode,
-        "ts": time,
-        "users": [email]
-      };
-      DatabaseMethods().createClassRoom(classCode, classroomInfoMap);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Home()));
-    }
   }
 
   @override
@@ -90,7 +68,7 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
                       margin: EdgeInsets.only(bottom: 12.0),
                       child: Center(
                         child: Text(
-                          "Create a Classroom",
+                          "Enroll in Classroom",
                           style: TextStyle(
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.05),
@@ -114,38 +92,12 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide.none),
-                                hintText: 'Enter Classroom Name',
+                                hintText: 'Enter Classroom Code',
                               ),
-                              controller: nameController,
+                              controller: codeController,
                               validator: (val) {
-                                return val.isEmpty || val.length < 3
-                                    ? "Enter name 3+ characters"
-                                    : null;
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Container(
-                            height: 80,
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(56, 68, 160, 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                hintText: 'Enter Creator Name',
-                              ),
-                              controller: creatorNameController,
-                              validator: (val) {
-                                return val.isEmpty || val.length < 3
-                                    ? "Enter name 3+ characters"
+                                return val.isEmpty || val.length < 6
+                                    ? "Enter valid code"
                                     : null;
                               },
                             ),
@@ -158,7 +110,14 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        create();
+                        if (formKey.currentState.validate()) {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          DatabaseMethods().add(email, codeController.text);
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => Home()));
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -169,14 +128,11 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
                         height: MediaQuery.of(context).size.height * 0.05,
                         child: Center(
                           child: Text(
-                            "Create",
+                            "Enroll",
                             textAlign: TextAlign.center,
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 16,
                     ),
                   ],
                 ),
