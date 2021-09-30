@@ -119,7 +119,7 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
                               controller: nameController,
                               validator: (val) {
                                 return val.isEmpty || val.length < 3
-                                    ? "Enter name 3+ characters"
+                                    ? "Enter classroom name 3+ characters"
                                     : null;
                               },
                             ),
@@ -145,7 +145,7 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
                               controller: creatorNameController,
                               validator: (val) {
                                 return val.isEmpty || val.length < 3
-                                    ? "Enter name 3+ characters"
+                                    ? "Enter creator name 3+ characters"
                                     : null;
                               },
                             ),

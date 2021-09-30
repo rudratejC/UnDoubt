@@ -5,6 +5,7 @@ import 'package:undoubt/helpers/sharedpref_helper.dart';
 import 'package:undoubt/screens/classroom_screen.dart';
 import 'package:undoubt/screens/create_classroom.dart';
 import 'package:undoubt/screens/enroll.dart';
+import 'package:undoubt/screens/settings_del.dart';
 import 'package:undoubt/screens/signIn.dart';
 import 'package:undoubt/services/auth.dart';
 import 'package:undoubt/services/database.dart';
@@ -158,19 +159,17 @@ class _HomeState extends State<Home> {
                       Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color: Colors.grey,
                             borderRadius: BorderRadius.circular(40)),
                         child: GestureDetector(
                           onTap: () {
-                            AuthMethods().signOut();
-                            Navigator.pushReplacement(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignIn()));
+                                    builder: (context) => Setting(myEmail)));
                           },
                           child: Icon(
                             Icons.settings,
-                            color: Colors.black,
+                            color: Colors.grey[700],
                           ),
                         ),
                       ),
