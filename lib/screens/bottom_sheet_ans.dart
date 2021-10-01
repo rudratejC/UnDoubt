@@ -35,7 +35,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
     Fluttertoast.showToast(
         msg: "✅ Image will be uploaded shortly!",
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.green,
         textColor: Colors.white,

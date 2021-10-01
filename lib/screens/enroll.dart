@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:undoubt/helpers/sharedpref_helper.dart';
@@ -118,6 +119,14 @@ class _EnrollClassroomScreenState extends State<EnrollClassroomScreen> {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) => Home()));
                         }
+                        Fluttertoast.showToast(
+                            msg: "✅ Enrolled successfully!",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
                       },
                       child: Container(
                         decoration: BoxDecoration(

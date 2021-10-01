@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:undoubt/helpers/sharedpref_helper.dart';
@@ -49,6 +50,14 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
       DatabaseMethods().createClassRoom(classCode, classroomInfoMap);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Home()));
+      Fluttertoast.showToast(
+          msg: "✅ Created classroom successfully!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
