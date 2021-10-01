@@ -48,15 +48,52 @@ class _AnwerScreenState extends State<AnwerScreen> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
 
-                  return answerListTile(
-                      desc: ds["desc"],
-                      time: ds["time"],
-                      id: ds.id,
-                      public: ds["public"],
-                      name: ds["name"]);
+                  return ds["img"]
+                      ? anserImageTile(
+                          ds["imgUrl"], ds["public"], ds["name"], ds["time"])
+                      : answerListTile(
+                          desc: ds["desc"],
+                          time: ds["time"],
+                          id: ds.id,
+                          public: ds["public"],
+                          name: ds["name"]);
                 })
             : Center(child: CircularProgressIndicator());
       },
+    );
+  }
+
+  anserImageTile(url, public, name, time) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(56, 68, 160, 1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: EdgeInsets.all(8),
+      margin: EdgeInsets.symmetric(vertical: 8),
+      width: MediaQuery.of(context).size.width * 0.92,
+      child: Column(
+        children: [
+          ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.network(
+                url,
+                width: MediaQuery.of(context).size.width * 0.7,
+              )),
+          public
+              ? Text(
+                  "${time.toDate().toString().substring(0, 16)} Contributed by: $name")
+              : Row(
+                  children: [
+                    Spacer(),
+                    Text(
+                      "${time.toDate().toString().substring(0, 16)}",
+                      textAlign: TextAlign.right,
+                    ),
+                  ],
+                )
+        ],
+      ),
     );
   }
 

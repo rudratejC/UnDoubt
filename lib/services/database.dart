@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:random_string/random_string.dart';
 import 'package:undoubt/helpers/sharedpref_helper.dart';
 
@@ -104,7 +108,9 @@ class DatabaseMethods {
       "desc": ans,
       "time": DateTime.now(),
       "public": public,
-      "name": myName
+      "name": myName,
+      "img": false,
+      "imgUrl": "",
     };
     print(classCode);
     print(doubtId);
@@ -138,5 +144,35 @@ class DatabaseMethods {
         .set({'users': users}, SetOptions(merge: true)).then((_) {
       print("success!");
     });
+  }
+
+  //Add answer image
+  addImageAns({File image, public, classCode, doubtId}) async {
+    Reference reference =
+        FirebaseStorage.instance.ref().child('/${image.path}');
+    UploadTask uploadTask = reference.putFile(image);
+    TaskSnapshot snapshot = await uploadTask;
+    var imageUrl = await snapshot.ref.getDownloadURL();
+    print(imageUrl);
+    String id = randomAlphaNumeric(6);
+    String myUsername = await SharedPreferenceHelper().getUserName();
+    String myName = await SharedPreferenceHelper().getDisplayName();
+    Map<String, dynamic> map = {
+      "addedBy": myUsername,
+      "desc": "",
+      "time": DateTime.now(),
+      "public": public,
+      "name": myName,
+      "img": true,
+      "imgUrl": imageUrl,
+    };
+    return FirebaseFirestore.instance
+        .collection("classrooms")
+        .doc(classCode)
+        .collection("doubts")
+        .doc(doubtId)
+        .collection("answers")
+        .doc(id)
+        .set(map);
   }
 }

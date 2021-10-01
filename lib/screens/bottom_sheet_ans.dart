@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:undoubt/services/database.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 TextEditingController ansText = new TextEditingController();
 String doubtId, classCode;
@@ -18,6 +23,25 @@ class BottomSheetWidget extends StatefulWidget {
 }
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
+  void addImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    File image = new File(pickedFile.path);
+    DatabaseMethods().addImageAns(
+        image: image,
+        public: _switchValue,
+        classCode: classCode,
+        doubtId: doubtId);
+    Fluttertoast.showToast(
+        msg: "✅ Image will be uploaded shortly!",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,6 +64,16 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 Row(
                   children: [
                     Spacer(),
+                    GestureDetector(
+                        onTap: () {
+                          addImage();
+                        },
+                        child: Icon(
+                          Icons.image,
+                        )),
+                    SizedBox(
+                      width: 8,
+                    ),
                     Text("Answer publicly:"),
                     SizedBox(
                       width: 8,
