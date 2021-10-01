@@ -75,7 +75,7 @@ class _AnwerScreenState extends State<AnwerScreen> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromRGBO(56, 68, 160, 1),
+          color: Color.fromRGBO(81, 152, 114, 1),
           borderRadius: BorderRadius.circular(10),
         ),
         padding: EdgeInsets.all(8),
@@ -141,7 +141,7 @@ class _AnwerScreenState extends State<AnwerScreen> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromRGBO(56, 68, 160, 1),
+          color: Color.fromRGBO(81, 152, 114, 1),
           borderRadius: BorderRadius.circular(10),
         ),
         width: MediaQuery.of(context).size.width * 0.92,

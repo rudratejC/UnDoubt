@@ -175,4 +175,12 @@ class DatabaseMethods {
         .doc(id)
         .set(map);
   }
+
+  //get user info
+  getUserInfo(String email) {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .where("email", isEqualTo: email)
+        .get();
+  }
 }

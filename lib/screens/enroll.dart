@@ -118,15 +118,15 @@ class _EnrollClassroomScreenState extends State<EnrollClassroomScreen> {
                           DatabaseMethods().add(email, codeController.text);
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) => Home()));
+                          Fluttertoast.showToast(
+                              msg: "✅ Enrolled successfully!",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         }
-                        Fluttertoast.showToast(
-                            msg: "✅ Enrolled successfully!",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.green,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
                       },
                       child: Container(
                         decoration: BoxDecoration(
