@@ -183,4 +183,16 @@ class DatabaseMethods {
         .where("email", isEqualTo: email)
         .get();
   }
+
+  Future<bool> checkWord(element) async {
+    Stream s = FirebaseFirestore.instance
+        .collection("data")
+        .where("words", arrayContains: element)
+        .snapshots();
+    if (s != null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

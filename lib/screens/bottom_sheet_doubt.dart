@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:undoubt/services/database.dart';
 
 TextEditingController doubtText = new TextEditingController();
@@ -29,9 +32,9 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
           Container(
             height: 125,
             decoration: BoxDecoration(
-                color: Color.fromRGBO(56, 68, 160, 1),
-                borderRadius: BorderRadius.circular(15),
-                ),
+              color: Color.fromRGBO(56, 68, 160, 1),
+              borderRadius: BorderRadius.circular(15),
+            ),
             child: Column(
               children: <Widget>[DecoratedTextField(), SheetButton()],
             ),
@@ -75,10 +78,32 @@ class _SheetButtonState extends State<SheetButton> {
       color: Colors.black,
       onPressed: () async {
         print("this is classcode $classCode");
-        if(doubtText.text!=""){
-          DatabaseMethods().addDoubt(classCode, doubtText.text);
-        doubtText.clear();
-        Navigator.pop(context);
+        if (doubtText.text != "") {
+          List words = doubtText.text.split(" ");
+          bool res = false;
+          for (int i = 0; i < words.length; i++) {
+            res = await DatabaseMethods().checkWord(words[i]);
+            print(words[i]);
+            if (!res) {
+              Fluttertoast.showToast(
+                  msg:
+                      "Can't add Doubt,It may contains some inappropriate words",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+              doubtText.clear();
+              Navigator.pop(context);
+              return;
+            }
+          }
+          if (!res) {
+            DatabaseMethods().addDoubt(classCode, doubtText.text);
+            doubtText.clear();
+            Navigator.pop(context);
+          }
         }
       },
       child: Text(
