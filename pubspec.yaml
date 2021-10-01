@@ -31,12 +31,16 @@ dependencies:
   firebase_core: ^1.2.0
   cloud_firestore: ^2.2.0
   google_sign_in: ^5.0.4
-  shared_preferences: ^2.0.6
+  shared_preferences: ^2.0.7
   random_string: ^2.3.1
   firebase_auth: ^1.2.0
   image_picker: any
   firebase_storage: ^10.0.4
   fluttertoast: ^8.0.8
+  photo_view: ^0.12.0
+  dio: ^4.0.0
+  url_launcher: ^6.0.3
+  path_provider: any
 
 dev_dependencies:
   flutter_test:

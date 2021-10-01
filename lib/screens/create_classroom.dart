@@ -51,7 +51,7 @@ class _CreateClassroomScreenState extends State<CreateClassroomScreen> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Home()));
       Fluttertoast.showToast(
-          msg: "✅ Created classroom successfully!",
+          msg: "✅ Classroom created successfully!",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

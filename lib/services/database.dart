@@ -161,7 +161,7 @@ class DatabaseMethods {
       "addedBy": myUsername,
       "desc": "",
       "time": DateTime.now(),
-      "public": public,
+      "public": true,
       "name": myName,
       "img": true,
       "imgUrl": imageUrl,

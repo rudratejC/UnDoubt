@@ -66,10 +66,23 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                     Spacer(),
                     GestureDetector(
                         onTap: () {
+                          Fluttertoast.showToast(
+                              msg: "⚠️Image Answers are not Anonymous!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                           addImage();
                         },
-                        child: Icon(
-                          Icons.image,
+                        child: Row(
+                          children: [
+                            Text("+"),
+                            Icon(
+                              Icons.image,
+                            ),
+                          ],
                         )),
                     SizedBox(
                       width: 8,

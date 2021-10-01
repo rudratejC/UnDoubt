@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:undoubt/screens/bottom_sheet_ans.dart';
 import 'package:undoubt/screens/create_classroom.dart';
+import 'package:undoubt/screens/img_view.dart';
 import 'package:undoubt/services/database.dart';
 
 class AnwerScreen extends StatefulWidget {
@@ -47,57 +48,84 @@ class _AnwerScreenState extends State<AnwerScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
-
                   return ds["img"]
-                      ? anserImageTile(
-                          ds["imgUrl"], ds["public"], ds["name"], ds["time"])
+                      ? anserImageTile(ds["imgUrl"], ds["public"], ds["name"],
+                          ds["time"], ds["addedBy"])
                       : answerListTile(
                           desc: ds["desc"],
                           time: ds["time"],
                           id: ds.id,
                           public: ds["public"],
-                          name: ds["name"]);
+                          name: ds["name"],
+                          email: ds["addedBy"]);
                 })
             : Center(child: CircularProgressIndicator());
       },
     );
   }
 
-  anserImageTile(url, public, name, time) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(56, 68, 160, 1),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.symmetric(vertical: 8),
-      width: MediaQuery.of(context).size.width * 0.92,
-      child: Column(
-        children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                url,
-                width: MediaQuery.of(context).size.width * 0.7,
-              )),
-          public
-              ? Text(
-                  "${time.toDate().toString().substring(0, 16)} Contributed by: $name")
-              : Row(
-                  children: [
-                    Spacer(),
-                    Text(
-                      "${time.toDate().toString().substring(0, 16)}",
-                      textAlign: TextAlign.right,
-                    ),
-                  ],
-                )
-        ],
+  anserImageTile(url, public, name, time, email) {
+    if (name == null) {
+      name = email;
+    }
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Img(url)));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(56, 68, 160, 1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: EdgeInsets.all(8),
+        margin: EdgeInsets.symmetric(vertical: 8),
+        width: MediaQuery.of(context).size.width * 0.92,
+        child: Column(
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.network(
+                  url,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.0,
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes
+                            : null,
+                      ),
+                    );
+                  },
+                )),
+            SizedBox(
+              height: 8,
+            ),
+            public
+                ? Text(
+                    "${time.toDate().toString().substring(0, 16)} Contributed by: $name")
+                : Row(
+                    children: [
+                      Spacer(),
+                      Text(
+                        "${time.toDate().toString().substring(0, 16)}",
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
+                  )
+          ],
+        ),
       ),
     );
   }
 
-  Widget answerListTile({desc, time, id, public, name}) {
+  Widget answerListTile({desc, time, id, public, name, email}) {
+    if (name == null) {
+      name = email;
+    }
     return GestureDetector(
       onTap: () {
         print("\n\n$id\n\n");
