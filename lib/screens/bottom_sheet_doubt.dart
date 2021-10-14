@@ -78,33 +78,34 @@ class _SheetButtonState extends State<SheetButton> {
       color: Colors.black,
       onPressed: () async {
         print("this is classcode $classCode");
-        if (doubtText.text != "") {
-          List words = doubtText.text.split(" ");
-          bool res = false;
-          for (int i = 0; i < words.length; i++) {
-            res = await DatabaseMethods().checkWord(words[i]);
-            print(words[i]);
-            if (!res) {
-              Fluttertoast.showToast(
-                  msg:
-                      "Can't add Doubt,It may contains some inappropriate words",
-                  toastLength: Toast.LENGTH_LONG,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.0);
-              doubtText.clear();
-              Navigator.pop(context);
-              return;
-            }
-          }
-          if (!res) {
-            DatabaseMethods().addDoubt(classCode, doubtText.text);
-            doubtText.clear();
-            Navigator.pop(context);
-          }
-        }
+        DatabaseMethods().addDoubt(classCode, doubtText.text);
+        doubtText.clear();
+        Navigator.pop(context);
+        // if (doubtText.text != "") {
+        //   List words = doubtText.text.split(" ");
+        //   bool res = false;
+        //   for (int i = 0; i < words.length; i++) {
+        //     res = await DatabaseMethods().checkWord(words[i]);
+        //     print(words[i]);
+        //     if (!res) {
+        //       Fluttertoast.showToast(
+        //           msg:
+        //               "Can't add Doubt,It may contains some inappropriate words",
+        //           toastLength: Toast.LENGTH_LONG,
+        //           gravity: ToastGravity.BOTTOM,
+        //           timeInSecForIosWeb: 1,
+        //           backgroundColor: Colors.red,
+        //           textColor: Colors.white,
+        //           fontSize: 16.0);
+        //       doubtText.clear();
+        //       Navigator.pop(context);
+        //       return;
+        //     }
+        //   }
+        //   if (!res) {
+        //     //here
+        //   }
+        // }
       },
       child: Text(
         'Ask',
